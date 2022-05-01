@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "develop": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,10 +25,10 @@
     "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "body-parser": "^1.19.0",
     "config": "^3.3.3",
     "express": "^4.17.1",
-    "ramda": "^0.27.2",
-    "request": "^2.88.2"
+    "ramda": "^0.27.2"
   }
 }
