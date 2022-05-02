@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("config");
 const axios = require("axios").default;
-const { getInvestments } = require("./services");
+const { getInvestments, getCompanies } = require("./services");
 
 const app = express();
 
@@ -23,7 +23,11 @@ app.get("/investments/:id", (req, res) => {
 app.get("/admin/report", async (req, res, next) => {
   try {
     const investmentsData = await getInvestments();
-    res.send(investmentsData);
+    const companiesData = await getCompanies();
+
+    const holdings = R.flatten(R.map(item => R.unwind('holdings', item), investmentsData));
+
+    res.sendStatus(204);
   } catch (e) {
     console.log(e);
     return next(e)
