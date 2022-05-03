@@ -7,12 +7,21 @@ const getInvestments = async () => {
     return (data.data);
 }
 
-const mapInvestments = (data) => {
-    const investmentsOutput = R.project(['userId', 'firstName', 'lastName', 'date', 'holdings', 'value'], data);
-    return investmentsOutput;
+const mapInvestments = (data, companies) => {
+    const holdings = R.flatten(R.map(item => (R.unwind('holdings', item)), data));
+    return holdings.map(
+        ({ userId, firstName, lastName, investmentTotal, date, holdings }) => ({
+            "User": userId,
+            "First Name": firstName,
+            "Last Name": lastName,
+            "Date": date,
+            "Holding": matchCompany(companies, holdings.id),
+            "Value": calculateHoldingValue(holdings.investmentPercentage, investmentTotal)
+        })
+    );
 }
 
-const getCompanies = () => {
+const getCompanies = async () => {
     const companiesData = await axios.get(`${config.companiesServiceUrl}/companies`).catch((error) => { console.log(error) });
     return R.project(['id', 'name'], companiesData.data);
 }
