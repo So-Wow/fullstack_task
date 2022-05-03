@@ -12,16 +12,16 @@ describe('admin services should', () => {
         expect(matchCompany(companiesData, '1')).toMatch(/The Big Investment Company/);
     });
 
-    it('return an object with specfied properties', () => {
-        const outputData = mapInvestments(investmentsData);
-        outputData.forEach((outputObject) => {
+    it('return an object with specified properties', () => {
+        const outputData = mapInvestments(investmentsData, companiesData);
+        outputData.forEach(outputObject => {
             expect(outputObject).toEqual(expect.objectContaining({
-                user: expect.any(String),
-                firstName: expect.any(String),
-                lastName: expect.any(String),
-                date: expect.any(String),
-                holding: expect.any(String),
-                value: expect.any(Number)
+                User: expect.any(String),
+                'First Name': expect.any(String),
+                'Last Name': expect.any(String),
+                Date: expect.any(String),
+                Holding: expect.any(String),
+                Value: expect.any(Number)
             }));
         })
     });
