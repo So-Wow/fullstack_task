@@ -2,7 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const config = require("config");
 const axios = require("axios").default;
-const { getInvestments, getCompanies } = require("./services");
+const R = require("ramda");
+const { getInvestments, getCompanies, mapInvestments } = require("./services");
+const { parse } = require('json2csv');
 
 const app = express();
 
@@ -25,12 +27,28 @@ app.get("/admin/report", async (req, res, next) => {
     const investmentsData = await getInvestments();
     const companiesData = await getCompanies();
 
-    const holdings = R.flatten(R.map(item => R.unwind('holdings', item), investmentsData));
+    const result = mapInvestments(investmentsData, companiesData);
+    console.log(result);
 
-    res.sendStatus(204);
+    const fields = ['User', 'First Name', 'Last Name', 'Date', 'Holding', 'Value'];
+    const opts = { fields };
+
+    try {
+      const csv = parse(result, opts);
+      console.log(csv);
+      await axios.post(`${config.investmentsServiceUrl}/investments/export`, csv, {
+        headers: {
+          "Content-Type": "text/csv"
+        }
+      });
+      res.sendStatus(204);
+    } catch (e) {
+      console.log(e);
+    }
+
   } catch (e) {
     console.log(e);
-    return next(e)
+    return next(e);
   }
 });
 
