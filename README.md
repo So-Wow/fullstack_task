@@ -109,3 +109,4 @@ Admin - localhost:8083
 - Add more unit tests to cover more of the services functions
 - Add tests to cover endpoint testing, including error handling. One solution I considered was using Jest combined with Supertest
 - Create OpenAPI documentation to document the API endpoints
+- Refine use of Ramda library as it's likely there are more efficient solutions than the ones I used
