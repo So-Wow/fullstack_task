@@ -1,5 +1,7 @@
 # Moneyhub Tech Test - Investments and Holdings
 
+[Go to updated section](#Update)
+
 At Moneyhub we use microservices to partition and separate the concerns of the codebase. In this exercise we have given you an example `admin` service and some accompanying services to work with. In this case the admin service backs a front end admin tool allowing non-technical staff to interact with data.
 
 A request for a new admin feature has been received
@@ -75,3 +77,35 @@ Financial Companies - localhost:8082
 
 Admin - localhost:8083
 - `/investments/:id` get an investment record by id
+
+
+# Update
+- [x] Added a route: `/admin/report`
+- [x] Report sends as CSV
+- [x] The csv contains a row for each holding matching the headers:
+    |User|First Name|Last Name|Date|Holding|Value|
+- [x] Explored using Ramda v0.28.0
+- [x] Updated libraries usign npm audit fix and replaced request package with Axios
+- [x] Testing using Jest
+
+## How to run
+1. Run `npm start` on all services
+2. Send a get request to `/admin/report` (e.g via Postman)
+3. Jest tests can be run with `npm test` from the root of the admin microservice
+
+## Task Questions
+### 1. How might you make this service more secure?
+- Rate limit requests to this endpoint to ensure availability
+- A combination of authentication (e.g. API key) and authorisation (RBAC) could be used to limit access to the API and manage access to specific endpoints
+
+### 2. How would you make this solution scale to millions of records?
+- Exploring data caching options to reduce I/O operations
+- Adding parameters to filter data e.g. by data, user, holding company
+- Batching requests to the csv export endpoint
+- Limiting the maximum amount of results from the investments service
+
+### 3. What else would you have liked to improve given more time?
+- Refactor the new admin report endpoint to have a separate function for converting json data to csv, and another for sending csv data to the export endpoint
+- Add more unit tests to cover more of the services functions
+- Add tests to cover endpoint testing, including error handling. One solution I considered was using Jest combined with Supertest
+- Create OpenAPI documentation to document the API endpoints
